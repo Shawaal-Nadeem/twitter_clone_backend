@@ -1,9 +1,14 @@
-from sqlmodel import SQLModel, Field, create_engine, Relationship
+from sqlmodel import SQLModel, Field, create_engine, Relationship, Session
 from typing import Optional, List
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
+def get_Session():
+    engine = create_engine(DATABASE_URL)
+    with Session(engine) as session:
+        yield session
 
 DATABASE_URL = os.getenv("conn_str").replace("postgres://", "postgresql+psycopg2://")
 
@@ -20,10 +25,24 @@ class UserLike(SQLModel, table=True):
     tweet_id: Optional[int] = Field(default=None, foreign_key="tweet.id")
     e_mail: str
     pass_word: str
-    tweet: 'Tweet' = Relationship(back_populates="like_user_ids")
+    tweet: 'Tweet' = Relationship(back_populates="likeUserIds")
 
 class Tweet(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    username: str
+    profile: str
+    content: str
+    slug: str
+    contentImage: Optional[str] = Field(default=None, alias="contentImage")
+    likesNumber: int = Field(default=0, alias="likesNumber")
+    password: str
+    email: str
+    commentsNumber: int
+    comments: List[Comment] = Relationship(back_populates="tweet")
+    likeUserIds: List[UserLike] = Relationship(back_populates="tweet")
+
+
+class CreateTweet(SQLModel):
     username: str
     profile: str
     content: str

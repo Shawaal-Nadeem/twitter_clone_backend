@@ -1,0 +1,11 @@
+name: fastapi_twitter
+services:
+  api:
+    build:
+        context: ./twitter_clone_backend
+        dockerfile: Dockerfile
+    container_name: fastapi_twitter_container
+    ports:
+      - 8000:8000
+    volumes:
+      - ./twitter_clone_backend:/code
