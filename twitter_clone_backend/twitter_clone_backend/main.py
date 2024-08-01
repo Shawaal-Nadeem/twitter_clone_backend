@@ -42,6 +42,11 @@ def update_tweet(tweet_id:int, tweet:CreateTweet, session:Annotated[Session, Dep
     tweet_to_update = session.get(Tweet, tweet_id)
     tweet_to_update.content = tweet.content
     tweet_to_update.username = tweet.username
+    tweet_to_update.slug = tweet.slug
+    tweet_to_update.likesNumber = tweet.likesNumber
+    tweet_to_update.likeUserIds= tweet.likeUserIds
+    tweet_to_update.comments = tweet.comments
+    tweet_to_update.commentsNumber = tweet.commentsNumber
     session.add(tweet_to_update)
     session.commit()
     session.refresh(tweet_to_update)
@@ -53,4 +58,3 @@ def delete_tweet(tweet_id:int, session:Annotated[Session, Depends(get_Session)])
     session.delete(tweet_to_delete)
     session.commit()
     return {"message":"Tweet deleted successfully"}
-
