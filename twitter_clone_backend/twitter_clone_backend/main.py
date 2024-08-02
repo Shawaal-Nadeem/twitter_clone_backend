@@ -47,6 +47,7 @@ def update_tweet(tweet_id:int, tweet:CreateTweet, session:Annotated[Session, Dep
     tweet_to_update.likeUserIds= tweet.likeUserIds
     tweet_to_update.comments = tweet.comments
     tweet_to_update.commentsNumber = tweet.commentsNumber
+    tweet_to_update.profile = tweet.profile
     session.add(tweet_to_update)
     session.commit()
     session.refresh(tweet_to_update)
